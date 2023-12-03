@@ -6,17 +6,19 @@ class Grid:
     
   def get_tile(self, row: int, col: int):
     return self.grid[row][col]
-    
-  def get_all_symbols_coords(self):
-    from string import punctuation
+  
+  def get_symbols_coords(self, symbols: "list[str]"):
     coords = []
-    symbols = punctuation.replace('.', '')
     for r, row in enumerate(self.grid):
       for c, ch in enumerate(row):
         if ch in symbols:
           coords.append((r, c))
           
     return coords
+    
+  def get_all_symbols_coords(self):
+    from string import punctuation
+    return self.get_symbols_coords(punctuation.replace('.', ''))
     
   def get_adjacent_numbers(self, row, col):
     numbers = []
@@ -61,14 +63,15 @@ with open('input3.txt', 'r') as fp:
 grid = Grid(data)
 # pprint.pprint(grid.all_numbers, sort_dicts=False)
 
-symbols = grid.get_all_symbols_coords()
+symbols = grid.get_symbols_coords(['*'])
 
 answer = 0
 
 for s in symbols:
   # print(grid.get_tile(*s))
   numbers = grid.get_adjacent_numbers(*s)
-  print(grid.get_tile(*s), numbers)
-  answer += sum(numbers)
+  # print(grid.get_tile(*s), numbers)
+  if len(numbers) == 2:
+    answer += numbers[0] * numbers[1]
 
 print(answer)
