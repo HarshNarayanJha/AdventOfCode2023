@@ -1,8 +1,14 @@
+from itertools import batched
+
 with open("input5.txt", 'r') as fp:
     data = fp.read()
     
 lines = data.split("\n")
-seeds = list(map(int, lines[0].strip("seeds :").split()))
+seeds_ranges = list(map(int, lines[0].strip("seeds :").split()))
+
+seeds = []
+for s, s1 in batched(seeds_ranges, 2):
+    seeds.append(range(s, s+s1))
 
 print(seeds)
 
@@ -50,15 +56,16 @@ locations = []
 for s in seeds:
     #location = humidity_to_location[temperature_to_humidity[light_to_temperature[water_to_light[fertilizer_to_water[soil_to_fertilizer[seed_to_soil[s]]]]]]]
     #locations.append(location)
-    a = get_value(s, get_map(all_maps[1]))
-    b = get_value(a, get_map(all_maps[2]))
-    c = get_value(b, get_map(all_maps[3]))
-    d = get_value(c, get_map(all_maps[4]))
-    e = get_value(d, get_map(all_maps[5]))
-    f = get_value(e, get_map(all_maps[6]))
-    g = get_value(f, get_map(all_maps[7]))
-    print(s, a, b, c, d, e, f, g)
+    for seed in s:
+        a = get_value(seed, get_map(all_maps[1]))
+        b = get_value(a, get_map(all_maps[2]))
+        c = get_value(b, get_map(all_maps[3]))
+        d = get_value(c, get_map(all_maps[4]))
+        e = get_value(d, get_map(all_maps[5]))
+        f = get_value(e, get_map(all_maps[6]))
+        g = get_value(f, get_map(all_maps[7]))
+        print(s, a, b, c, d, e, f, g)
 
-    locations.append(g)
+        locations.append(g)
 
 print(min(locations))
