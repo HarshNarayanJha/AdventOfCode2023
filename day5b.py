@@ -53,19 +53,26 @@ def get_value(val: int, the_map: dict):
     #     return val
 
 locations = []
-for s in seeds:
-    #location = humidity_to_location[temperature_to_humidity[light_to_temperature[water_to_light[fertilizer_to_water[soil_to_fertilizer[seed_to_soil[s]]]]]]]
-    #locations.append(location)
-    for seed in s:
-        a = get_value(seed, get_map(all_maps[1]))
-        b = get_value(a, get_map(all_maps[2]))
-        c = get_value(b, get_map(all_maps[3]))
-        d = get_value(c, get_map(all_maps[4]))
-        e = get_value(d, get_map(all_maps[5]))
-        f = get_value(e, get_map(all_maps[6]))
-        g = get_value(f, get_map(all_maps[7]))
-        print(s, a, b, c, d, e, f, g)
+import threading
 
-        locations.append(g)
+for s in seeds:
+
+    def find_location(s):
+        #location = humidity_to_location[temperature_to_humidity[light_to_temperature[water_to_light[fertilizer_to_water[soil_to_fertilizer[seed_to_soil[s]]]]]]]
+        #locations.append(location)
+        for seed in s:
+            a = get_value(seed, get_map(all_maps[1]))
+            b = get_value(a, get_map(all_maps[2]))
+            c = get_value(b, get_map(all_maps[3]))
+            d = get_value(c, get_map(all_maps[4]))
+            e = get_value(d, get_map(all_maps[5]))
+            f = get_value(e, get_map(all_maps[6]))
+            g = get_value(f, get_map(all_maps[7]))
+            print(s, a, b, c, d, e, f, g)
+            
+            locations.append(g)
+
+    t = threading.Thread(target=find_location, args=[s])
+    t.start()
 
 print(min(locations))
