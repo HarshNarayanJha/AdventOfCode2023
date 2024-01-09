@@ -3,9 +3,21 @@
 #include <string>
 #include <vector>
 #include <numeric>
+#include <algorithm>
+#include <map>
 #include <regex>
 
-std::string digits = "1234567890";
+std::map<std::string, std::string> digits {
+    {"one", "o1e"},
+    {"two", "t2o"},
+    {"three", "t3e"},
+    {"four", "f4r"},
+    {"five", "f5e"},
+    {"six", "s6x"},
+    {"seven", "s7n"},
+    {"eight", "e8t"},
+    {"nine", "n9e"},
+};
 
 int main()
 {
@@ -29,6 +41,12 @@ int main()
         char first = 'x';
         char last = 'x';
         std::string line = lines[i];
+
+        for (auto &p : digits)
+        {
+            std::cout << p.first << " " << p.second << std::endl;
+            line = std::regex_replace(line, std::regex(p.first), p.second);
+        }
 
         line = std::regex_replace(line, std::regex("[A-z]"), "");
 
